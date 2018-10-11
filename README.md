@@ -1,6 +1,5 @@
 # Overview
-dtpc is short for DynamoDB Two Phase Commits. The implementation is inspired by MongoDB's "Perform Two Phase Commits" article.
-For more information on the implementation please go to the EA Confluence page at https://confluence.ea.com/pages/viewpage.action?spaceKey=Firemonkeys&title=Exos+RFC%3A+Perform+Two+Phase+Commits
+dtpc is short for DynamoDB Two Phase Commits.
 
 # Structure
 ## Components
