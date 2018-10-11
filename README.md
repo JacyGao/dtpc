@@ -1,5 +1,6 @@
 # Overview
 dtpc is short for DynamoDB Two Phase Commits.
+package dtpc attempts to provide an alternative solution of handling multi-document transactions with DynamoDB.
 
 # Structure
 ## Components
