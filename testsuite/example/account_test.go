@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 
-	"stash.ea.com/scm/exos/server/lib/data/dynamodb/dtpc"
+	"github.com/dtpc"
 )
 
 var (

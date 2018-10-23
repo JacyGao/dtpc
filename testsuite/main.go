@@ -10,8 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"golang.org/x/net/context"
 
-	"stash.ea.com/scm/exos/server/lib/data/dynamodb/dtpc"
-	"stash.ea.com/scm/exos/server/lib/data/dynamodb/dtpc/testsuite/example"
+	"github.com/dtpc"
+	"github.com/dtpc/testsuite/example"
 )
 
 const LocalEndpoint = "http://localhost:8000"

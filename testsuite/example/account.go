@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 	"golang.org/x/net/context"
 
-	"stash.ea.com/scm/exos/server/lib/data/dynamodb/dtpc"
+	"github.com/dtpc"
 )
 
 const maxUpdateAttempts = 10
