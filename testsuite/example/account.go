@@ -1,6 +1,7 @@
 package example
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"time"
@@ -10,9 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
-	"golang.org/x/net/context"
-
-	"github.com/dtpc"
+	"github.com/jacygao/acid"
 )
 
 const maxUpdateAttempts = 10
@@ -75,7 +74,7 @@ func NewHandlerImpl(db dynamodbiface.DynamoDBAPI, tableName, hashKeyName string)
 }
 
 // Get retrieves an account document from data store
-func (h *HandlerImpl) Get(ctx context.Context, accountID string, retval dtpc.Account) error {
+func (h *HandlerImpl) Get(ctx context.Context, accountID string, retval acid.Account) error {
 	pk := map[string]string{
 		h.hashKeyName: accountID,
 	}
@@ -98,7 +97,7 @@ func (h *HandlerImpl) Get(ctx context.Context, accountID string, retval dtpc.Acc
 }
 
 // Put inserts a new Account document to the sql
-func (h *HandlerImpl) Put(ctx context.Context, doc dtpc.Account) error {
+func (h *HandlerImpl) Put(ctx context.Context, doc acid.Account) error {
 	item, err := dynamodbattribute.MarshalMap(doc)
 	if err != nil {
 		return err
@@ -124,7 +123,7 @@ func (h *HandlerImpl) Put(ctx context.Context, doc dtpc.Account) error {
 
 // Update updates account documents by applying a transaction and appending the ID of the transaction to the pendingTransaction list.
 // Optimistic locking is applied to support concurrent updates to a single account doccument.
-func (h *HandlerImpl) Update(ctx context.Context, accountID, transactionID string, tr dtpc.Request) error {
+func (h *HandlerImpl) Update(ctx context.Context, accountID, transactionID string, tr acid.Request) error {
 	reqData, ok := tr.Data.(Item)
 	if !ok {
 		return fmt.Errorf("failed to unmarshalling transaction request %s into type Item", tr)
@@ -292,7 +291,7 @@ func (h *HandlerImpl) commit(ctx context.Context, accountID, transactionID strin
 // Rollback recovers a failed transaction by applying the opposite logic of currency transfer
 // and removes a transaction ID from its PendingTransaction list.
 // Optimistic locking is applied to support concurrent updates to a single account doccument.
-func (h *HandlerImpl) Rollback(ctx context.Context, accountID, transactionID string, tr dtpc.Request) error {
+func (h *HandlerImpl) Rollback(ctx context.Context, accountID, transactionID string, tr acid.Request) error {
 	reqData, ok := tr.Data.(Item)
 	if !ok {
 		return fmt.Errorf("failed to unmarshalling transaction request %s into type Item", tr)

@@ -1,4 +1,4 @@
-package dtpc
+package acid
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"golang.org/x/net/context"
+	"context"
 
 	"github.com/google/uuid"
 )

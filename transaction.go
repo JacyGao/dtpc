@@ -1,10 +1,11 @@
-package dtpc
+package acid
 
 import (
 	"time"
 
+	"context"
+
 	"github.com/google/uuid"
-	"golang.org/x/net/context"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"

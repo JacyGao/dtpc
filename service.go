@@ -1,9 +1,9 @@
-package dtpc
+package acid
 
 import (
 	"time"
 
-	"golang.org/x/net/context"
+	"context"
 )
 
 // AccountHandler defines required methods of account data handling for transaction processes.

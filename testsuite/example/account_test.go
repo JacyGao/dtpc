@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"testing"
 
-	"golang.org/x/net/context"
+	"context"
 
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 
-	"github.com/dtpc"
+	"github.com/jacygao/acid"
 )
 
 var (
@@ -81,7 +81,7 @@ func TestUpdate(t *testing.T) {
 	mockSourceAccountID := "mock_source_account_id"
 	mockDestinationAccountID := "mock_destination_account_id"
 	mockTransactionID := "mock_transaction_id"
-	mockTransferReq := dtpc.Request{
+	mockTransferReq := acid.Request{
 		Source:      mockSourceAccountID,
 		Destination: mockDestinationAccountID,
 		Data: Item{
@@ -116,7 +116,7 @@ func TestRollback(t *testing.T) {
 	mockSourceAccountID := "mock_source_account_id"
 	mockDestinationAccountID := "mock_destination_account_id"
 	mockTransactionID := "mock_transaction_id"
-	mockTransferReq := dtpc.Request{
+	mockTransferReq := acid.Request{
 		Source:      mockSourceAccountID,
 		Destination: mockDestinationAccountID,
 		Data: Item{

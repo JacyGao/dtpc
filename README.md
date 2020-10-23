@@ -1,6 +1,7 @@
 # Overview
-dtpc is short for DynamoDB Two Phase Commits.
-Package dtpc attempts to provide an alternative solution of handling multi-document transactions with DynamoDB.
+
+the acronym ACID refers to the four key properties of a transaction: atomicity, consistency, isolation, and durability.
+Package acid attempts to provide an alternative solution of handling multi-document transactions with DynamoDB using Two-Phase Commits.
 
 # Structure
 ## Components

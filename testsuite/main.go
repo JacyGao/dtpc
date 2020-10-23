@@ -4,14 +4,15 @@ import (
 	"log"
 	"time"
 
+	"context"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"golang.org/x/net/context"
 
-	"github.com/dtpc"
-	"github.com/dtpc/testsuite/example"
+	"github.com/jacygao/acid"
+	"github.com/jacygao/acid/testsuite/example"
 )
 
 const LocalEndpoint = "http://localhost:8000"
@@ -38,10 +39,10 @@ func main() {
 	}
 
 	// Setup Transaction Store
-	transactionStore := dtpc.NewTransactionStore(dynamodbCli, "transactions")
+	transactionStore := acid.NewTransactionStore(dynamodbCli, "transactions")
 
 	// Setup Transaction Service
-	srv := dtpc.NewService(transactionStore, accountHandler)
+	srv := acid.NewService(transactionStore, accountHandler)
 	ctx := context.Background()
 	if err := testSingleTransaction(ctx, srv); err != nil {
 		panic(err.Error())
@@ -72,7 +73,7 @@ func teardown(db *dynamodb.DynamoDB) error {
 	return nil
 }
 
-func setupAccounts(ah dtpc.AccountHandler) error {
+func setupAccounts(ah acid.AccountHandler) error {
 	resources := make(map[string]example.Item)
 	resources["item1"] = example.Item{
 		ID:     "item1",
@@ -99,7 +100,7 @@ func setupAccounts(ah dtpc.AccountHandler) error {
 	return nil
 }
 
-func testSingleTransaction(ctx context.Context, srv *dtpc.Service) error {
+func testSingleTransaction(ctx context.Context, srv *acid.Service) error {
 	req := getTransactionRequest("account1", "account2", "item1", 10)
 
 	if _, err := srv.StartTransaction(ctx, req); err != nil {
@@ -108,7 +109,7 @@ func testSingleTransaction(ctx context.Context, srv *dtpc.Service) error {
 	return nil
 }
 
-func testRecoverTransactions(ctx context.Context, srv *dtpc.Service) error {
+func testRecoverTransactions(ctx context.Context, srv *acid.Service) error {
 	t := time.Now().Add(-10000 * time.Millisecond)
 	return srv.RecoverTransactions(ctx, t)
 }
@@ -144,8 +145,8 @@ func getStaticAwsCredentials() (*credentials.Credentials, error) {
 	return awsCreds, nil
 }
 
-func getTransactionRequest(source, destination, itemID string, itemQuantity int) dtpc.Request {
-	return dtpc.Request{
+func getTransactionRequest(source, destination, itemID string, itemQuantity int) acid.Request {
+	return acid.Request{
 		Source:      source,
 		Destination: destination,
 		Data: example.Item{
